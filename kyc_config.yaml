@@ -1,0 +1,13 @@
+api_settings:
+  base_url: https://api.kyc-service.com
+  retry: 3
+  timeout: 30
+test_cases:
+  case_001:
+    body:
+      customer_id: KYC-12345
+      document_number: P12345678
+      document_type: passport
+    endpoint: /verify
+    method: POST
+    name: 客户身份验证测试

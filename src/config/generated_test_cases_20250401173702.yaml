@@ -1,0 +1,89 @@
+test_cases:
+  case_001:
+    body: {}
+    headers:
+      Content-Type: application/json
+    method: GET
+    name: 获取用户信息
+    params:
+      user_id: '12345'
+  case_002:
+    body:
+      email: test@example.com
+      username: test_user
+    headers:
+      Content-Type: application/json
+    method: POST
+    name: 创建新用户
+    params: {}
+  case_1:
+    body:
+      body: Short content
+      title: Short title
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_1
+    params: {}
+  case_2:
+    body:
+      body: Longer content for testing boundary value
+      title: Longer title for testing boundary value
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_2
+    params: {}
+  case_3:
+    body:
+      body: Empty title
+      title: ''
+      userId: 50
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_3
+    params: {}
+  case_4:
+    body:
+      body: '!@#$%^&*()'
+      title: Special characters in body
+      userId: 10
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_4
+    params: {}
+  case_5:
+    body:
+      body: Long content exceeding 1000 characters limit Long content exceeding 1000
+        characters limit Long content exceeding 1000 characters limit Long content
+        exceeding 1000 characters limit Long content exceeding 1000 characters limit
+        Long content exceeding 1000 characters limit Long content exceeding 1000 characters
+        limit Long content exceeding 1000 characters limit Long content exceeding
+        1000 characters limit Long content exceeding 1000 characters limit
+      title: Title with maximum length - 100 characters maximum
+      userId: 75
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_5
+    params: {}
+  case_6:
+    body:
+      body: Valid content
+      title: Valid title
+      userId: 200
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_6
+    params: {}

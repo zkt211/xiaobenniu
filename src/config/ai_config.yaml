@@ -1,0 +1,11 @@
+ai_services:
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    api_base: "${OPENAI_API_BASE}"
+    model: "gpt-3.5-turbo"
+    timeout: 30
+  deepseek:
+    api_key: "${DEEPSEEK_API_KEY}"
+    api_base: "${DEEPSEEK_API_BASE}"
+    model: "deepseek-chat"
+    timeout: 30

@@ -1,0 +1,49 @@
+name: "接口测试套件"
+description: "测试导流方服务的各个接口"
+
+variables:
+  # base_url: "https://test785122.iben-itech.com"
+  base_url: "http://192.168.1.134:8080"
+
+test_cases:    
+  case_001:
+    name: "撞库测试 - 正常场景"
+    description: "测试客户身份验证接口 - 预期可贷款"
+    api_path: "${base_url}/api/v2/traffic/yibeixiaochengxu/user-check"
+    method: "POST"
+    body:
+      channelCode: "YiBeiMP"
+      timestamp: ""
+      data:
+        phoneNo: "13812345678"
+        idNo: "310101199001011234"       
+        name: "张三"
+        type: "1"
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      checkLoan: 1
+      rejectReason: null
+
+  case_002:
+    name: "撞库测试 - 拒绝场景"
+    description: "测试客户身份验证接口 - 预期不可贷款"
+    api_path: "${base_url}/api/v2/traffic/yibeixiaochengxu/user-check"
+    method: "POST"
+    body:
+      channelCode: "YiBeiMP"
+      timestamp: ""
+      data:
+        phoneNo: "19585085482"
+        idNo: "513701199102035780"       
+        name: "张静"
+        type: "1"
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      checkLoan: 0
+      rejectReason: "重复"

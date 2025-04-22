@@ -1,0 +1,76 @@
+test_cases:
+  case_001:
+    body: {}
+    headers:
+      Content-Type: application/json
+    method: GET
+    name: 获取用户信息
+    params:
+      user_id: '12345'
+  case_002:
+    body:
+      email: test@example.com
+      username: test_user
+    headers:
+      Content-Type: application/json
+    method: POST
+    name: 创建新用户
+    params: {}
+  case_1:
+    body:
+      body: Short content
+      title: Short title
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_1
+    params: {}
+  case_2:
+    body:
+      body: Content within 200 characters
+      title: Title within 20 characters
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_2
+    params: {}
+  case_3:
+    body:
+      body: Content with special characters !@#$%
+      title: ''
+      userId: 50
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_3
+    params: {}
+  case_4:
+    body:
+      body: Very long content beyond 1000 characters limit Very long content beyond
+        1000 characters limit Very long content beyond 1000 characters limit Very
+        long content beyond 1000 characters limit
+      title: Very long title beyond 100 characters limit Very long title beyond 100
+        characters limit
+      userId: 101
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_4
+    params: {}
+  case_5:
+    body:
+      body: ''
+      title: Title with 20 characters!
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_5
+    params: {}

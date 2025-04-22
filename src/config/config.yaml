@@ -1,0 +1,29 @@
+environment:
+  base_url: "http://api.example.com"
+  timeout: 30
+
+test_cases:
+  case_001:
+    name: "获取用户信息"
+    api_key: "test_key_1"
+    api_secret: "secret_1"
+    api_url: "/api/user/info"
+    method: "GET"
+    headers:
+      Content-Type: "application/json"
+    params:
+      user_id: "12345"
+    body: {}
+
+  case_002:
+    name: "创建新用户"
+    api_key: "test_key_1"
+    api_secret: "secret_1"
+    api_url: "/api/user/create"
+    method: "POST"
+    headers:
+      Content-Type: "application/json"
+    params: {}
+    body:
+      username: "test_user"
+      email: "test@example.com"

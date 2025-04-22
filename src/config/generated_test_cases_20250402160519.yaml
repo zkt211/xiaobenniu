@@ -1,0 +1,154 @@
+test_cases:
+  case_001:
+    body: {}
+    headers:
+      Content-Type: application/json
+    method: GET
+    name: 获取用户信息
+    params:
+      user_id: '12345'
+  case_002:
+    body:
+      email: test@example.com
+      username: test_user
+    headers:
+      Content-Type: application/json
+    method: POST
+    name: 创建新用户
+    params: {}
+  case_1:
+    body:
+      body: Short Body
+      title: Short Title
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_1
+    params: {}
+  case_10:
+    body:
+      body: Special Characters Test
+      title: Special Characters Test
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_10
+    params: {}
+  case_11:
+    body:
+      body: Normal Body
+      title: Normal Title
+      userId: 0
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_11
+    params: {}
+  case_12:
+    body:
+      body: Normal Body
+      title: Normal Title
+      userId: 101
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_12
+    params: {}
+  case_2:
+    body:
+      body: Longer Body for Boundary Testing
+      title: Longer Title for Boundary Testing
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_2
+    params: {}
+  case_3:
+    body:
+      body: Empty Title Test
+      title: ''
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_3
+    params: {}
+  case_4:
+    body:
+      body: Special Characters Test
+      title: Special Characters Test
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_4
+    params: {}
+  case_5:
+    body:
+      body: 'Exceeding 200 Characters Content: Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus
+        diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis
+        ipsum. Nulla sed nisl posuere lectus aliquet, sed lacinia erat venenatis.
+        Fusce vestibulum nunc vitae lacus auctor.'
+      title: Normal Title
+      userId: 1
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_5
+    params: {}
+  case_6:
+    body:
+      body: Valid Body
+      title: Valid Title
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_6
+    params: {}
+  case_7:
+    body:
+      body: Short Body
+      title: Short Title
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_7
+    params: {}
+  case_8:
+    body:
+      body: Longer Body for Boundary Testing
+      title: Longer Title for Boundary Testing
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_8
+    params: {}
+  case_9:
+    body:
+      body: ''
+      title: Empty Title Test
+      userId: 100
+    headers:
+      Accept: application/json
+      Content-Type: application/json
+    method: POST
+    name: case_9
+    params: {}
