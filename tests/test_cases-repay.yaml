@@ -1,0 +1,29 @@
+name: "接口测试套件"
+description: "测试导流方服务的各个接口"
+
+variables:
+  # base_url: "https://test785122.iben-itech.com"
+  base_url: "http://192.168.1.199:8081"
+
+test_cases:    
+  case_001:
+    name: "还款测试 - 正常场景"
+    description: "测试还款请求接口"
+    api_path: "${base_url}/api/v2/traffic/yibeixiaochengxu/repay-send"
+    method: "POST"
+    body:
+      channelCode: "YiBeiMP"
+      timestamp: ""
+      data:
+        userId: "1865250989873733633"
+        orderId: "LXR2025042211412840257574494"       
+        loanId: "xhy20241207124654LN263451"
+        repayId: "1865257933774692353"
+        clear: 0
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      success: false
+      

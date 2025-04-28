@@ -1,9 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import unittest
 import os
 import sys
 import time
 import yaml
 import json
+import random  # 确保这行在这里
+from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from network.http_client import HttpClient
@@ -15,8 +20,8 @@ from .test_case import TestCase, TestStatus
 class TestConfigManager(unittest.TestCase):
     def setUp(self):
         self.current_time = time.strftime('%Y%m%d%H%M%S')
-        #还款
-        self.test_cases_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'tests', 'test_cases-repay.yaml')
+        #还款测试用例路径
+        self.test_cases_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'tests', 'test_cases_user_credit.yaml')
 
         #进件
         # self.test_cases_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'tests', 'test_cases_user_check.yaml')
@@ -27,13 +32,10 @@ class TestConfigManager(unittest.TestCase):
         with open(self.rsa_config_path, 'r', encoding='utf-8') as f:
             rsa_config = yaml.safe_load(f)
             channel_rsa = rsa_config.get('channel_rsa', {})
-            # self.channel_private_key = channel_rsa.get('private_key', '')
-            # self.channel_public_key = channel_rsa.get('public_key', '')
-            self.channel_private_key = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCQczHYWPaUWuln7z97UawePimBjpa+XOG8t8e0Y33a8CybfsfImvQjw1kxIcRp9Q04tdyBS+8rzMRDj7POH89ewvLC/FDaV7ZnNUtYW3MYUOWYOi7AaVdM7SszQpWg2Cdw9v2q/Nfwlv6a6pLPYxZRuecgwdl1u8X7WeWZ7UX2wz3oVR3Exm5EtNwFysWS2vc8MrbW9AGyHaj5L5Wdy80Cwy3wZY/6dSqIS0MYPLhLPQOH7w/dELyoEfwNz6IUCCk1rbYjFJwI1gK72iGRdcs5P+0DHXzian9Nwalw8gT4TqasfGMyAOlCyNEJoI6VkY8Z8rt6dVsBoNt1Z+AGa6GBAgMBAAECggEAIUUO8XQIEwJfaOtfVTFp8atClw725FBzQ6qWihMyPRd9RrEsJaWe3o/TPrA202q4CVxFtdf99bobaC40bSDBe+Nt04AWxTtXjSzmtiqV9z9GqkmYVAPPMi4b+Zn36YxvhSK2KUhEGitE5/xoJPD/BoLJW6+aPPYrMumxKsNODnfv+AtD5k4vvkQH+fxn1VIQBBr5AuhzLVoDNdKe4X6wn2wXOMggIqwADmhbc/dJ0beCg91UuYsV1TTFzOh3rqv4XM2l57AXTFhZttY1r+7YckpFuK4siUWK0EjB5hyx9mGyyWvhpuiS14U4yCcCZMTb5vSlMMjMjtM6ml8Pzd7v+wKBgQDByBViJODsOVtsWWGYeqz9Yl5vrenDzZaerFDROFBWAKTe9oEgLx+hQhQHnNwCEKqNoZYPW+vAW9Nw/l3BjIP0886jYdsEtohPyZDIYoIwDgb4ySv7KbOhW59F+Lv1LGzi+u26+YJqY2n3dBl2vth8tK9lDgaIr5ANQNl5HE/KNwKBgQC+1EpZyD4SQ1ISUV9eMqFUuiyElz7d3G84GDZ6208291HhgK7e2cGTLAF9Mh2hgyVlgHSnR+8J2AImMFEgSZXGH8PXOoWLv1xxzx8ijavvnAbp8xHwTxiA0ol3nJAd+TijZD45UvBrP5l1PCcq58WRft8emfy1yJfMY46/KFa2BwKBgHD38e9bTHyqG3AY01qO+dZlyGQW4Ray/cHW9u5hhAP/MB6DWlem4SujWAXwHhpeGO+kadTeY5uqbKOMxp+VCUB9+dMpswMWXnUVLwCC3R6irtHOhYNQllXVEg86qGiP05Kncnv0BWF8P0RxPH8LVy2sMCwbdxesMbBoQ9/k72cVAoGACSbXNf0TdP7DhdtfLn5RHGYdUnKKcktrDg6jNjskTmeIBr+MI2XgEbXPkHiB0Ugf2AFUFt2tShSQ7dHtYhYFV84YL09ALlaMEW00egy/TSt3bWrZ1mOEslDmhNT+WGGmZLefAFLI8uvG6UdsPXOGFxc1jhsmcnVfSk8P/nzpw6sCgYAiZtvYbvS8YZloZfYLJHTd98lFvVQ47uB7IJJt3JFarDI7Cr1NV+B4lQrgn5TLe086m0+I2+9rarwJGFbfAR1k9r2bAoOX7cq0Cqj/jyzrb1SbOy45yGDco42i57xtjLdmQroSLbdqn7oJM5PXt/OfJETE2dbgooy17dtvKBCrHw=="
-            # self.channel_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkHMx2Fj2lFrpZ+8/e1GsHj4pgY6WvlzhvLfHtGN92vAsm37HyJr0I8NZMSHEafUNOLXcgUvvK8zEQ4+zzh/PXsLywvxQ2le2ZzVLWFtzGFDlmDouwGlXTO0rM0KVoNgncPb9qvzX8Jb+muqSz2MWUbnnIMHZdbvF+1nlme1F9sM96FUdxMZuRLTcBcrFktr3PDK21vQBsh2o+S+VncvNAsMt8GWP+nUqiEtDGDy4Sz0Dh+8P3RC8qBH8Dc+iFAgpNa22IxScCNYCu9ohkXXLOT/tAx184mp/TcGpcPIE+E6mrHxjMgDpQsjRCaCOlZGPGfK7enVbAaDbdWfgBmuhgQIDAQAB"
-            # 平台密钥对
-            # self.platform_private_key = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCuJT9Lq9okijnVbh+VjN8z5te+wALfOuL7mZ8uuPdw5f7OgW4gr1tUPedB3yAM1wwikGVmCadj1i4tnX+x0ga+eNqQYYm6tqKlu+qHGosd1uSdBaAf54Tq6eTEK4/wsDYdkizLR5v9KpvX/a3zNB0Fjaw7dYLyFzhaP9OLFyFhtkNSWAK4O+3Gu1ta0cl2OxTDGyVCLeomNV1t3aTyTvcK0f54A/qBjy/2Vxzm1b8qTOxlfTn9Y/Vqs7FqUm4agKrqZvS23C2FpUWMHFZZ4nZVaHSsYmMxRmuUreCKvzDtB+2Vqx/sxKZiOX/stVzuVtOLMvksB1PrEm4rZZ5SdngNAgMBAAECggEAIusbDvxNiGgjApXLRXxywQB3oCr2KHaxTsvV7FNwYjXr6tJvF6SxxmmHNmEcFxcDuuaDPnuPEei/Z6weD7TSX1zyTmMQb9zxLhRJCYAcBwaw3n9jRSJyN3xgv6kQeq2KnFFUJAqez5u8lgmq2IpJi3SF5YJBmHNpfEcyDsC7k9DYbtpymqKdryBlLhUNS/nTf+LqTQecaTGWDQfatYIuQF+fzOLwGYDagQzaKsuH520rZu74+skZQxmMl6TlLX+lUW2eiS0kTlzUNopqcJsKhkAaRz7fi1C5zsCARa5MiPjapzA1DWY4x/QUPjxa5uv9i9u+x270Gz/T0x1XtquhoQKBgQDVdVGmuU+2bzv/Uhx7U5Ha+/vNZaNR78UTMlFbXgSL3M9JnLK/F5uDwv+tBJSXotPI4pXW2foq93Qb4UbeegjYNvJpM0u7YQ69wWPCEfAuGbFZovtGHn5wkt5N37hZWgDO/g+EE9LhhjTkMxtrYNvPP9wEFOHhv3km1smx+GKR5QKBgQDQ2i7U/aH3wsInaBAyPPBDgSN4M3emg/kerjcQJGTW8BoyetU8VyJUXM9Hro7Kx+o6thK79P0L//ue8N6VNdAdVNFVcEjJCbOauGCLfqPFaZ6qhu98GRt0SVvL+kiqCrsmnhkF2e6+9Apy4vyhts1Gpkp1J7XZJJs5rOnKziiLCQKBgQCaZrM6Iv8K2mkOpSle97MgMHcSOnupcAMggJwit94YAQ+bkpIk8YGXDHz+fLqy+J+yxltWPvPbEoVVCV3G3YT6SLyN5gHYtzr/fRyYq3sNDZ6gVOjm7nXNHh9ZOwNQ9m5xS4qTofc/FGG700/5GuXEgs+10BkXvvV2Z5Ube6xpFQKBgQC1JxqJ+jlb2x1m6tdpi/vmwYOPhizZTQ1vNDNkl/yzhm1irbJ5dSa8wAe2qE0IzKB5LmZPi69VkkKhWVHnYFbUqjYsgolPf0+++wAa3syUtgk+5m2hWXG7ysmJwtz2SPqOA4G21pJEJQ9PGV2BszqYdjKNLdWItDzDqRzcoTb/aQKBgQDNpwzuPMIKIC77I6nY2QIKPT+Q4Kkyr4D9bw47jjE1L4RtlO0GHBjJl30C5ACK7sQygMOQepwYJz7qmH0j75tR+gfjz4t5HJWDyW3AdpB4a3LPwCv2vMKLRi4IYHwzDaL6V1q6tx2snlnNkEM3Cj5UoaSUQ/+NZ/euE2oxaAOBgw=="
+            self.channel_private_key = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC2GWk9HKsazGpLFujzqr3eVlvwjVLmfr/3C8C4gLGSGyiFGv0SU0slT8iMvnB5RlGfkHmYqNuSxVOwGRtRHs6Kv5A15duhL8K29lrfoeArF0vSBGx9viC+IvCgdXTsVbLqyK+Wo5mnBZPKRhjU3aJq2fyVr/wxDbkYUWN6iy+YhCptmkzZz7tA9NGoPa62XaMY759QYnzjpbu5UY+qcmTmAmfxizOW8GIeryY4b6//eskOYD3F0qfGfuAezZRqCZAfAK8NsTYCKPhhUtunqfq0QWAhYAPQhSGARkRoYKOBhCMIu0pqWJY+rvW6OGc72SrhVlSr9euYKqXpikXSTA27AgMBAAECggEABsuE80xWEC5vivTEZY9J/XlwfdXwMXyqUiAkpV3cAm00Al+C8QOdqrtC6wmSLdxTYGZmOy2V3/CwEkKlk83X/DJwwaodm3KqS+R+eJjUQhdg82nJ2JlXJHEuVHZ9kfIStpMdhjv9mE9rd+FMvOi2TlFrDPTfrr7p2L/0u9ZkxMadk1rTCJBqSSDe4FAxlxTT2LtvruZY8D/Vk49wlIeNc0VtiRRTM3qXQxRShWb6RwzL6+uQTa3kaJOPdkplhwAmo0BO9c++X1cV1CEfc1DFF7818CaRfWxAcp6Q9xEpLcs+V+gajaaLYmdNmRf8Hef75CUt5GpeYbxDT3U3zpoXVQKBgQDuZXl7cCDBqkvLmUql/65Wm+lSZKMA/ygSb8ejPE+gHOE1IQVwB65DawMkNHaQIg6nwtFQbMndX85rSY9lpcpv54WxB0TUfrWIWmh1T3qc9xlbtpPg3P5LBF9d6UcNOOINNrxBcVOL+MCYxGKnrYlrPOvAuYX/ohtW5R+nysX3xQKBgQDDi7lZ+3VqYP6MZgmaZvpdBZrn0K85Cvw9ecumMRefRo0ywu2vD/yV+CAJlNpvDdSARX0AyxCh8d4KmKWTRarUR7Y4X28iv3Asvw50U3OGF5HiQMRSr+3byK9OK4zrwujwzKm5LaoevnPv8dkuRMMGV2pP8jNU/6znGOD8KEzHfwKBgAKZ0tB48bKLNBZ9jqXu+yzwuIPwmyKopfxFge0S/F9n0UEuIgwN2WXc5gTgGacK6BQGeRgih7VFlU/wVoMqYuIDqZ670JFs7HgXXGpjOpg5zeoFPOnIH3IcExpIMEFBrJ2uSjGAlgPB6//+rIDd0ND9sijBHWgjkZ7KEyVWfgBtAoGAOzNU9SIE5STiS50ksSMWDw2AXUg3lDx4KyBxgCoCrczNOJ39GW/sl3acNGplSxPTztW6x3+y1GSGRYz7K7/+vO/NAfoailmM228oMB2HrwP5vZbAGQx8JXr3X+Idcs76eNRtWcuyYkZkkTMV/kUBCi1y2StJUSVqsjg8/PoybH8CgYBFAcsqHSBkP5R4/rrOJhLZBiaAqAq55PPBC/nwP4haDP0g1aS0TdPUY1I28bWpPwrYxIiFNuslgERcMSLUk9oR3Mbs6JOqImXqvry3n89qmEp645C5jlfjfhIIOggchD3wo7pfOP3JLzpO4kZ8M6Uvfgg7xA/9qjHufrlxPmLvjQ==" # 保持原有的私钥值
+
             self.platform_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAriU/S6vaJIo51W4flYzfM+bXvsAC3zri+5mfLrj3cOX+zoFuIK9bVD3nQd8gDNcMIpBlZgmnY9YuLZ1/sdIGvnjakGGJuraipbvqhxqLHdbknQWgH+eE6unkxCuP8LA2HZIsy0eb/Sqb1/2t8zQdBY2sO3WC8hc4Wj/TixchYbZDUlgCuDvtxrtbWtHJdjsUwxslQi3qJjVdbd2k8k73CtH+eAP6gY8v9lcc5tW/KkzsZX05/WP1arOxalJuGoCq6mb0ttwthaVFjBxWWeJ2VWh0rGJjMUZrlK3gir8w7Qftlasf7MSmYjl/7LVc7lbTizL5LAdT6xJuK2WeUnZ4DQIDAQAB"
+        
         # 加载测试套件
         self.test_suite = TestSuite.from_yaml(self.test_cases_path)
         
@@ -114,19 +116,6 @@ class TestConfigManager(unittest.TestCase):
             case = self.test_suite.cases[case_id]
             print(f"\n执行测试用例: {case.name} ({case_id})")
             
-            # 如果是用户进件相关的测试用例，替换身份证号
-            if isinstance(case.body, dict) and 'data' in case.body:
-                data = case.body['data']
-                if isinstance(data, dict) and 'idNo' in data:
-                    # 生成新的随机身份证号
-                    new_id_number = self.generate_random_id_number()
-                    data['idNo'] = new_id_number
-                    print(f"使用随机生成的身份证号: {new_id_number}")
-                    
-                    # 如果存在userAuthInfo且包含idNo字段，也进行替换
-                    if 'userAuthInfo' in data and isinstance(data['userAuthInfo'], dict):
-                        data['userAuthInfo']['idNo'] = new_id_number
-            
             # 解析变量
             api_path = self.test_suite.resolve_variables(case.api_path)
             print(f"API路径: {api_path}")
@@ -134,7 +123,19 @@ class TestConfigManager(unittest.TestCase):
             
             # 处理请求体中的加密数据
             if isinstance(case.body, dict) and 'data' in case.body:
-                # 获取当前时间戳
+                # 生成新的随机身份证号
+                new_id_number = self.generate_random_id_number()
+                
+                # 更新userAuthInfo中的身份证号和相关信息
+                if 'userAuthInfo' in case.body['data'] and isinstance(case.body['data']['userAuthInfo'], dict):
+                    case.body['data']['userAuthInfo']['idNo'] = new_id_number
+                    # 从身份证号中提取出生日期
+                    birth_date = f"{new_id_number[6:10]}-{new_id_number[10:12]}-{new_id_number[12:14]}"
+                    case.body['data']['userAuthInfo']['birthDay'] = birth_date
+                    print(f"使用随机生成的身份证号: {new_id_number}")
+                    print(f"对应的出生日期: {birth_date}")
+                
+                # 生成当前时间戳
                 current_timestamp = int(time.time() * 1000)
                 case.body['timestamp'] = current_timestamp
                 
@@ -153,7 +154,7 @@ class TestConfigManager(unittest.TestCase):
                         self.channel_private_key
                     )
             
-            print(f"请求消息体: {case}")
+            # print(f"请求消息体: {case}")
             
             # 设置用例状态为运行中
             case.status = TestStatus.RUNNING
@@ -356,38 +357,22 @@ class TestConfigManager(unittest.TestCase):
         # 断言测试结果
         # self.assertEqual(test_results['fail'], 0, f"有 {test_results['fail']} 个测试用例失败")
 
-    @staticmethod
-    def generate_random_id_number():
-        """生成随机的18位身份证号码
+    def generate_random_id_number(self):
+        """生成随机身份证号"""
+        # 随机生成地区码(以北京市的区域码为例)
+        area_code = "110101"  # 可以扩展为随机地区码
         
-        Returns:
-            str: 符合规则的18位身份证号码
-        """
-        import random
-        from datetime import datetime, timedelta
+        # 随机生成出生日期(1960-2000年之间)
+        year = str(random.randint(1960, 2000))
+        month = str(random.randint(1, 12)).zfill(2)
+        day = str(random.randint(1, 28)).zfill(2)  # 简化处理，统一使用28天
+        birth_date = f"{year}{month}{day}"
         
-        # 省份代码列表（部分示例）
-        province_codes = [
-            '11', '12', '13', '14', '15', '21', '22', '23', '31', '32', '33', '34', '35', 
-            '36', '37', '41', '42', '43', '44', '45', '46', '50', '51', '52', '53', '54', '61', '62', '63', '64', '65'
-        ]
+        # 随机生成顺序码
+        sequence = str(random.randint(1, 999)).zfill(3)
         
-        # 生成地区码（省份代码 + 随机4位）
-        area_code = random.choice(province_codes) + str(random.randint(0, 9999)).zfill(4)
-        
-        # 生成出生日期（1970-2000年之间）
-        start_date = datetime(1970, 1, 1)
-        end_date = datetime(2000, 12, 31)
-        days_between = (end_date - start_date).days
-        random_days = random.randint(0, days_between)
-        birth_date = start_date + timedelta(days=random_days)
-        birth_code = birth_date.strftime('%Y%m%d')
-        
-        # 生成顺序码（3位数）
-        sequence = str(random.randint(0, 999)).zfill(3)
-        
-        # 前17位
-        base = f"{area_code}{birth_code}{sequence}"
+        # 构建前17位
+        base = f"{area_code}{birth_date}{sequence}"
         
         # 计算校验码
         weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
@@ -401,7 +386,6 @@ class TestConfigManager(unittest.TestCase):
         
         # 组合最终的身份证号码
         id_number = f"{base}{check_code}"
-        
         return id_number
 
 if __name__ == '__main__':

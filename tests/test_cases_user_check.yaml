@@ -3,7 +3,7 @@ description: "测试导流方服务的各个接口"
 
 variables:
   # base_url: "https://test785122.iben-itech.com"
-  base_url: "http://192.168.1.134:8080"
+  base_url: "http://192.168.1.134:8081"
 
 test_cases:    
   case_001:

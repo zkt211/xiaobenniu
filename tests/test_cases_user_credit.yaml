@@ -1,0 +1,258 @@
+name: "接口测试套件"
+description: "测试导流方服务的各个接口"
+
+variables:
+  # base_url: "https://test785122.iben-itech.com"
+  base_url: "http://192.168.1.2:8080"
+
+test_cases:    
+  case_001:
+    name: "yibei进件测试 - 正常场景"
+    description: "进件并发接口测试"
+    api_path: "${base_url}/api/v2/traffic/youxinfenqi/user-credit"
+    method: "POST"
+    body:
+      channelCode: "yibei"
+      timestamp: ""
+      data:
+        loanUse: ""
+        orderId: "SH1745716804573"
+        phoneNo: "15188880367"
+        userAuthInfo:
+          address: "河南省郑州市中原区幸福"
+          authority: "海口市公安局美兰分局"
+          backImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/b629b69d45f95d31b351ae6909081c68.jpg"
+          birthDay: "1990-02-01"
+          frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
+          gender: "男"
+          idNo: "460108199002015058"
+          name: "三六七"
+          nation: "汉"
+          validDate: "20220129-20420129"
+        userContactInfo:
+          - contactName: "张强"
+            contactPhone: "15000000002"
+            contactRelationCode: "3"
+            orderNo: 1
+          - contactName: "张燕"
+            contactPhone: "15000000001"
+            contactRelationCode: "8"
+            orderNo: 2
+        userDeviceInfo:
+          deviceId: "45D1C37817C716B7E9CB5347D5C1E1D7"
+          deviceModel: ""
+          gpsAddress: ""
+          gpsArea: ""
+          gpsCity: ""
+          gpsLat: "20.032279"
+          gpsLng: "110.321845"
+          gpsProvince: ""
+          osType: "Android"
+          osVersion: ""
+          userIp: "140.240.17.209"
+        userFaceInfo:
+          confidence: "99.00"
+          livingImage1: "https://yxfq.njzuxiangzu.com/save/20250304/1741060524892524.jpg"
+          livingImage2: ""
+        userId: 8868
+        userPersonInfo:
+          children: ""
+          educationCode: "4"
+          email: ""
+          liveAddress: "幸福小区一栋"
+          liveAreaCode: ""
+          liveAreaName: "东城区"
+          liveCityCode: ""
+          liveCityName: "北京市"
+          liveProvinceCode: ""
+          liveProvinceName: "北京市"
+          marriageCode: "1"
+        userWorkUnitInfo:
+          annualIncome: "2"
+          industryCode: "F"
+          positonCode: "0"
+          workAddress: "幸福小区一栋"
+          workAreaCode: ""
+          workAreaName: "东城区"
+          workCityCode: ""
+          workCityName: "北京市"
+          workCompany: "信息科技有限公司"
+          workIncome: "13"
+          workProvinceCode: ""
+          workProvinceName: "北京市"
+          workTel: "01066126626"
+          workYears: ""
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      success: true
+      message: null
+
+  case_002:
+    name: "lexiangrong进件测试 - 正常场景"
+    description: "进件并发接口测试"
+    api_path: "${base_url}/api/v2/traffic/weixianghua/user-credit"
+    method: "POST"
+    body:
+      channelCode: "lexiangrong"
+      timestamp: ""
+      data:
+        loanUse: ""
+        orderId: "SH1745716804573"
+        phoneNo: "15188880367"
+        userAuthInfo:
+          address: "河南省郑州市中原区幸福"
+          authority: "海口市公安局美兰分局"
+          backImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/b629b69d45f95d31b351ae6909081c68.jpg"
+          birthDay: "1990-02-01"
+          frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
+          gender: "男"
+          idNo: "460108199002015058"
+          name: "三六七"
+          nation: "汉"
+          validDate: "20220129-20420129"
+        userContactInfo:
+          - contactName: "张强"
+            contactPhone: "15000000002"
+            contactRelationCode: "3"
+            orderNo: 1
+          - contactName: "张燕"
+            contactPhone: "15000000001"
+            contactRelationCode: "8"
+            orderNo: 2
+        userDeviceInfo:
+          deviceId: "45D1C37817C716B7E9CB5347D5C1E1D7"
+          deviceModel: ""
+          gpsAddress: ""
+          gpsArea: ""
+          gpsCity: ""
+          gpsLat: "20.032279"
+          gpsLng: "110.321845"
+          gpsProvince: ""
+          osType: "Android"
+          osVersion: ""
+          userIp: "140.240.17.209"
+        userFaceInfo:
+          confidence: "99.00"
+          livingImage1: "https://yxfq.njzuxiangzu.com/save/20250304/1741060524892524.jpg"
+          livingImage2: ""
+        userId: 8868
+        userPersonInfo:
+          children: ""
+          educationCode: "4"
+          email: ""
+          liveAddress: "幸福小区一栋"
+          liveAreaCode: ""
+          liveAreaName: "东城区"
+          liveCityCode: ""
+          liveCityName: "北京市"
+          liveProvinceCode: ""
+          liveProvinceName: "北京市"
+          marriageCode: "1"
+        userWorkUnitInfo:
+          annualIncome: "2"
+          industryCode: "F"
+          positonCode: "0"
+          workAddress: "幸福小区一栋"
+          workAreaCode: ""
+          workAreaName: "东城区"
+          workCityCode: ""
+          workCityName: "北京市"
+          workCompany: "信息科技有限公司"
+          workIncome: "13"
+          workProvinceCode: ""
+          workProvinceName: "北京市"
+          workTel: "01066126626"
+          workYears: ""
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      success: true
+      message: null
+  case_003:
+    name: "DtSCiU进件测试 - 正常场景"
+    description: "进件并发接口测试"
+    api_path: "${base_url}/api/v2/traffic/zhijie/user-credit"
+    method: "POST"
+    body:
+      channelCode: "DtSCiU"
+      timestamp: ""
+      data:
+        loanUse: ""
+        orderId: "SH1745716804573"
+        phoneNo: "15188880367"
+        userAuthInfo:
+          address: "河南省郑州市中原区幸福"
+          authority: "海口市公安局美兰分局"
+          backImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/b629b69d45f95d31b351ae6909081c68.jpg"
+          birthDay: "1990-02-01"
+          frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
+          gender: "男"
+          idNo: "460108199002015058"
+          name: "三六七"
+          nation: "汉"
+          validDate: "20220129-20420129"
+        userContactInfo:
+          - contactName: "张强"
+            contactPhone: "15000000002"
+            contactRelationCode: "3"
+            orderNo: 1
+          - contactName: "张燕"
+            contactPhone: "15000000001"
+            contactRelationCode: "8"
+            orderNo: 2
+        userDeviceInfo:
+          deviceId: "45D1C37817C716B7E9CB5347D5C1E1D7"
+          deviceModel: ""
+          gpsAddress: ""
+          gpsArea: ""
+          gpsCity: ""
+          gpsLat: "20.032279"
+          gpsLng: "110.321845"
+          gpsProvince: ""
+          osType: "Android"
+          osVersion: ""
+          userIp: "140.240.17.209"
+        userFaceInfo:
+          confidence: "99.00"
+          livingImage1: "https://yxfq.njzuxiangzu.com/save/20250304/1741060524892524.jpg"
+          livingImage2: ""
+        userId: 8868
+        userPersonInfo:
+          children: ""
+          educationCode: "4"
+          email: ""
+          liveAddress: "幸福小区一栋"
+          liveAreaCode: ""
+          liveAreaName: "东城区"
+          liveCityCode: ""
+          liveCityName: "北京市"
+          liveProvinceCode: ""
+          liveProvinceName: "北京市"
+          marriageCode: "1"
+        userWorkUnitInfo:
+          annualIncome: "2"
+          industryCode: "F"
+          positonCode: "0"
+          workAddress: "幸福小区一栋"
+          workAreaCode: ""
+          workAreaName: "东城区"
+          workCityCode: ""
+          workCityName: "北京市"
+          workCompany: "信息科技有限公司"
+          workIncome: "13"
+          workProvinceCode: ""
+          workProvinceName: "北京市"
+          workTel: "01066126626"
+          workYears: ""
+    expected_status: 200
+    expected_response:
+      code: "000000"
+      message: "成功"
+    expected_data:
+      success: true
+      message: null

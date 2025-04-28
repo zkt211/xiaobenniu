@@ -1,10 +1,16 @@
 import base64
+import logging
+from io import BytesIO
 from typing import Dict, Tuple
 
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key, load_der_public_key
+
+# 配置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 CHARSET = 'utf-8'
 ALGORITHM_RSA = 'RSA'
@@ -16,25 +22,60 @@ class RSAEncrypUtil:
     @staticmethod
     def build_rsa_encrypt_by_public_key(data: str, key: str) -> str:
         """
-        RSA算法公钥加密数据
+        RSA算法公钥加密数据（支持大数据分段加密）
         :param data: 待加密的明文字符串
         :param key: RSA公钥字符串(Base64编码)
         :return: RSA公钥加密后的经过Base64编码的密文字符串
         """
         try:
-            # 直接解码Base64公钥
+            logger.info(f"开始RSA公钥加密，数据长度：{len(data)}")
+            
+            # 解码Base64公钥
+            logger.info("正在解码Base64公钥...")
             public_key_bytes = base64.b64decode(key)
+            logger.info(f"公钥解码后字节长度：{len(public_key_bytes)}")
+            
+            # 加载公钥
+            logger.info("正在加载DER格式公钥...")
             public_key = serialization.load_der_public_key(public_key_bytes)
-
-            # 加密数据
-            data_bytes = data.encode(CHARSET)
-            encrypted = public_key.encrypt(
-                data_bytes,
-                padding.PKCS1v15()
-            )
-            return base64.b64encode(encrypted).decode(CHARSET)
+            
+            # 将数据转换为字节
+            logger.info("正在将数据转换为字节...")
+            data_bytes = data.encode('utf-8')
+            logger.info(f"数据字节长度：{len(data_bytes)}")
+            
+            # RSA 2048位密钥的最大加密块大小为245字节
+            block_size = 245
+            logger.info(f"使用分块大小：{block_size}字节")
+            
+            # 分段加密
+            output = BytesIO()
+            total_blocks = (len(data_bytes) + block_size - 1) // block_size
+            logger.info(f"需要处理的数据块数量：{total_blocks}")
+            
+            for i in range(0, len(data_bytes), block_size):
+                block = data_bytes[i:i + block_size]
+                logger.info(f"正在加密第{i//block_size + 1}/{total_blocks}块，当前块大小：{len(block)}字节")
+                encrypted_block = public_key.encrypt(
+                    block,
+                    padding.PKCS1v15()
+                )
+                output.write(encrypted_block)
+                logger.info(f"第{i//block_size + 1}块加密成功")
+            
+            # 获取所有加密数据并进行Base64编码
+            encrypted_data = output.getvalue()
+            logger.info(f"所有数据块加密完成，总加密数据长度：{len(encrypted_data)}字节")
+            
+            result = base64.b64encode(encrypted_data).decode('utf-8')
+            logger.info(f"Base64编码完成，最终结果长度：{len(result)}")
+            return result
+            
         except Exception as e:
-            raise RuntimeError(f'加密字符串[{data}]时遇到异常') from e
+            logger.error(f"加密过程发生异常：{str(e)}", exc_info=True)
+            logger.error(f"原始数据长度：{len(data)}")
+            logger.error(f"公钥长度：{len(key)}")
+            raise RuntimeError(f'加密字符串时遇到异常: {str(e)}') from e
 
     @staticmethod
     def build_rsa_decrypt_by_public_key(data: str, key: str) -> str:
