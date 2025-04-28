@@ -3,7 +3,7 @@ description: "测试导流方服务的各个接口"
 
 variables:
   # base_url: "https://test785122.iben-itech.com"
-  base_url: "http://192.168.1.2:8080"
+  base_url: "http://192.168.1.2:8081"
 
 test_cases:    
   case_001:
@@ -26,7 +26,7 @@ test_cases:
           frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
           gender: "男"
           idNo: "460108199002015058"
-          name: "三六七"
+          name: "优薪分期"
           nation: "汉"
           validDate: "20220129-20420129"
         userContactInfo:
@@ -110,7 +110,7 @@ test_cases:
           frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
           gender: "男"
           idNo: "460108199002015058"
-          name: "三六七"
+          name: "唯享花"
           nation: "汉"
           validDate: "20220129-20420129"
         userContactInfo:
@@ -193,7 +193,7 @@ test_cases:
           frontImage: "https://yxfq.njzuxiangzu.com/uploads/20250427/dbf832f8209c57f18f20448bc5a36ec7.jpg"
           gender: "男"
           idNo: "460108199002015058"
-          name: "三六七"
+          name: "智借"
           nation: "汉"
           validDate: "20220129-20420129"
         userContactInfo:
